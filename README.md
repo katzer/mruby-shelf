@@ -21,10 +21,8 @@ Add the line below to your `build_config.rb`:
 
 ```ruby
 MRuby::Build.new do |conf|
-
   # ... (snip) ...
-
-  conf.gem 'mruby-shelf', github: 'katzer/mruby-shelf'
+  conf.gem 'mruby-shelf'
 end
 ```
 
@@ -32,10 +30,8 @@ Or add this line to your aplication's `mrbgem.rake`:
 
 ```ruby
 MRuby::Gem::Specification.new('your-mrbgem') do |spec|
-
   # ... (snip) ...
-
-  spec.add_dependency 'mruby-shelf', github: 'katzer/mruby-shelf'
+  spec.add_dependency 'mruby-shelf'
 end
 ```
 
