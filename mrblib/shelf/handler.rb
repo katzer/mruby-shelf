@@ -20,13 +20,40 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-MRuby::Gem::Specification.new('mruby-shelf') do |spec|
-  spec.license = 'MIT'
-  spec.authors = 'Sebastian Katzer'
-  spec.summary = 'Modular webserver interface'
+module Shelf
+  # *Handlers* connect web servers with Shelf.
+  #
+  # Shelf includes Handlers for SimpleHttpServer.
+  #
+  # Handlers usually are activated by calling <tt>MyHandler.run(myapp)</tt>.
+  # A second optional hash can be passed to include server-specific
+  # configuration.
+  module Handler
+    # Handle for given shorthand name.
+    #
+    # @param [ String ] server
+    #
+    # @return [ Class ]
+    def self.get(server)
+      @handlers[server]
+    end
 
-  spec.add_dependency 'mruby-r3'
-  spec.add_dependency 'mruby-env'
+    # Default Server handler to use.
+    #
+    # @return [ Class ]
+    def self.default
+      get ENV.fetch('SHELF_HANDLER', 'simplehttpserver')
+    end
 
-  spec.add_test_dependency 'mruby-print'
+    # Register a handler class via a shorthand hand.
+    # The handler class needs to respond to `run`.
+    #
+    # @param [ String ] server
+    # @param [ Class ] klass
+    #
+    # @return [ Void ]
+    def self.register(server, klass)
+      (@handlers ||= {})[server.to_s] = klass
+    end
+  end
 end
