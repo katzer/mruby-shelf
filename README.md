@@ -36,7 +36,7 @@ end
 ```
 
 
-## Usage
+## Builder
 
 The Rack::Builder DSL is compatible with Shelf::Builder. Shelf uses [mruby-r3][mruby-r3] for the path dispatching to add some nice extras.
 
@@ -89,6 +89,42 @@ app.call('REQUEST_METHOD' => 'PUT', 'PATH_INFO' => '/users/1')
 ```
 
 
+## Handler
+
+The Rack::Handler DSL is mostly compatible with Shelf::Handler except that it takes the handler class instead of the path string.
+
+```ruby
+Shelf::Handler.register 'h2o', H2O::Shelf::Handler
+```
+
+Per default Shelf uses its built-in handler for [mruby-simplehttpserver][mruby-simplehttpserver]:
+
+```ruby
+Shelf::Handler.default
+# => Shelf::Handler::SimpleHttpServer
+```
+
+Howver its possible to customize that:
+
+```ruby
+ENV['SHELF_HANDLER'] = 'h2o'
+```
+
+## Development
+
+Clone the repo:
+    
+    $ git clone https://github.com/katzer/mruby-shelf.git && cd mruby-shelf/
+
+Compile the source:
+
+    $ rake compile
+
+Run the tests:
+
+    $ rake test
+
+
 ## Authors
 
 - Sebastián Katzer, Fa. appPlant GmbH
@@ -106,5 +142,6 @@ Made with :yum: from Leipzig
 [rack]: https://github.com/rack/rack
 [mruby]: https://github.com/mruby/mruby
 [mruby-r3]: https://github.com/katzer/mruby-r3
+[mruby-simplehttpserver]: https://github.com/matsumotory/mruby-simplehttpserver
 [license]: http://opensource.org/licenses/MIT
 [appplant]: www.appplant.de
