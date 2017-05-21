@@ -25,8 +25,8 @@ MRuby::Gem::Specification.new('mruby-shelf') do |spec|
   spec.authors = 'Sebastian Katzer'
   spec.summary = 'Modular webserver interface'
 
-  spec.add_dependency 'mruby-r3'
-  spec.add_dependency 'mruby-env'
+  spec.add_dependency 'mruby-r3',  mgem: 'mruby-r3'
+  spec.add_dependency 'mruby-env', mgem: 'mruby-env'
 
-  spec.add_test_dependency 'mruby-print'
+  spec.add_test_dependency 'mruby-print', core: 'mruby-print'
 end
