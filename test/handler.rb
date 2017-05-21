@@ -39,4 +39,5 @@ assert 'Shelf::Handler#default', '$SHELF_HANDLER set' do
   Shelf::Handler.register 'superfastobject', Object
   ENV['SHELF_HANDLER'] = 'superfastobject'
   assert_equal Object, Shelf::Handler.default
+  ENV.delete 'SHELF_HANDLER'
 end

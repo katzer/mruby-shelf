@@ -91,7 +91,7 @@ app.call('REQUEST_METHOD' => 'PUT', 'PATH_INFO' => '/users/1')
 
 ## Handler
 
-The Rack::Handler DSL is mostly compatible with Shelf::Handler except that it takes the handler class instead of the path string.
+The Rack::Handler class is mostly compatible with Shelf::Handler except that it takes the handler class instead of the path string.
 
 ```ruby
 Shelf::Handler.register 'h2o', H2O::Shelf::Handler
@@ -109,6 +109,27 @@ Howver its possible to customize that:
 ```ruby
 ENV['SHELF_HANDLER'] = 'h2o'
 ```
+
+
+## Server
+
+The Rack::Server API is mostly compatible with Shelf::Server except that there's no _config.ru_ file, built-in opt parser. Only the main options (:app, :port, :host, ...) are supported. Also note that :host and :port are written downcase!
+
+```ruby
+Shelf::Server.start(
+  app: ->(e) {
+    [200, { 'Content-Type' => 'text/html' }, ['hello world']]
+  }
+  server: 'simplehttpserver'
+)
+```
+
+The middleware chain can be defined per environment:
+
+```ruby
+Shelf::Server.middleware[:production] << MyCustomMiddleware
+```
+
 
 ## Development
 
