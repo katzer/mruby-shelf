@@ -24,6 +24,7 @@ module Shelf
   HTTP_HOST         = 'HTTP_HOST'.freeze
   HTTP_VERSION      = 'HTTP_VERSION'.freeze
   HTTPS             = 'HTTPS'.freeze
+  DATE              = 'Date'.freeze
   PATH_INFO         = 'PATH_INFO'.freeze
   REQUEST_METHOD    = 'REQUEST_METHOD'.freeze
   REQUEST_PATH      = 'REQUEST_PATH'.freeze

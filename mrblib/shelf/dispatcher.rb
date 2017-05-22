@@ -102,7 +102,7 @@ module Shelf
       [
         404,
         { CONTENT_TYPE => 'text/plain', 'X-Cascade' => 'pass' },
-        ['Not Found']
+        [Utils::HTTP_STATUS_CODES[404]]
       ]
     end
 
@@ -113,7 +113,7 @@ module Shelf
       [
         405,
         { CONTENT_TYPE => 'text/plain', 'X-Cascade' => 'pass' },
-        ['Method Not Allowed']
+        [Utils::HTTP_STATUS_CODES[405]]
       ]
     end
 

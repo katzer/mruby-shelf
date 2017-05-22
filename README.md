@@ -119,7 +119,7 @@ The Rack::Server API is mostly compatible with Shelf::Server except that there's
 Shelf::Server.start(
   app: ->(e) {
     [200, { 'Content-Type' => 'text/html' }, ['hello world']]
-  }
+  },
   server: 'simplehttpserver'
 )
 ```
