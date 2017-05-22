@@ -95,14 +95,14 @@ module Shelf
       || (!host && is_same_server)
     end
 
-    # Default response if path could not resolve.
+    # Default response if path could not be resolved.
     #
     # @return [ Array ]
     def path_not_found
       [
         404,
         { CONTENT_TYPE => 'text/plain', 'X-Cascade' => 'pass' },
-        [Utils::HTTP_STATUS_CODES[404]]
+        ["#{Utils::HTTP_STATUS_CODES[404]}\n"]
       ]
     end
 
@@ -113,7 +113,7 @@ module Shelf
       [
         405,
         { CONTENT_TYPE => 'text/plain', 'X-Cascade' => 'pass' },
-        [Utils::HTTP_STATUS_CODES[405]]
+        ["#{Utils::HTTP_STATUS_CODES[405]}\n"]
       ]
     end
 
