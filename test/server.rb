@@ -90,6 +90,14 @@ assert 'Shelf::Server#middleware' do
   assert_kind_of Array, server.middleware['xyz']
 end
 
+assert 'Shelf::Server::middleware', 'development' do
+  assert_include Shelf::Server.middleware['development'], Shelf::ContentLength
+end
+
+assert 'Shelf::Server::middleware', 'production' do
+  assert_include Shelf::Server.middleware['production'], Shelf::ContentLength
+end
+
 assert 'Shelf::Server#server' do
   ENV.delete 'SHELF_HANDLER'
   assert_equal Shelf::Handler::SimpleHttpServer, Shelf::Server.new.server
