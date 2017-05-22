@@ -36,10 +36,14 @@ end
 assert 'Shelf::Server::middleware' do
   assert_true Shelf::Server.respond_to? :middleware
   assert_kind_of Hash, Shelf::Server.middleware
+
   assert_include Shelf::Server.middleware, 'production'
   assert_include Shelf::Server.middleware, 'development'
-  assert_false Shelf::Server.middleware.include? 'xyz'
+
   assert_kind_of Array, Shelf::Server.middleware['xyz']
+
+  Shelf::Server.middleware['test'] << Object
+  assert_include Shelf::Server.middleware['test'], Object
 end
 
 assert 'Shelf::Server#initialize', 'without options' do
@@ -80,14 +84,7 @@ assert 'Shelf::Server#initialize', 'with options' do
 end
 
 assert 'Shelf::Server#middleware' do
-  server = Shelf::Server.new
-
-  assert_true server.respond_to? :middleware
-  assert_kind_of Hash, server.middleware
-  assert_include server.middleware, 'production'
-  assert_include server.middleware, 'development'
-  assert_false server.middleware.include? 'xyz'
-  assert_kind_of Array, server.middleware['xyz']
+  assert_equal Shelf::Server.middleware, Shelf::Server.new.middleware
 end
 
 assert 'Shelf::Server::middleware', 'development' do

@@ -46,10 +46,12 @@ module Shelf
     #
     # @return [ Hash<String, Array>]
     def self.middleware
-      m = Hash.new { |h, k| h[k] = [] }
-      m['production']  = [ContentLength]
-      m['development'] = [ContentLength]
-      m
+      @m ||= begin
+        m = Hash.new { |h, k| h[k] = [] }
+        m['production']  = [ContentLength]
+        m['development'] = [ContentLength]
+        m
+      end
     end
 
     # Options may include:
