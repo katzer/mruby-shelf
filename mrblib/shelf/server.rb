@@ -68,7 +68,7 @@ module Shelf
     #     turn on debug output ($DEBUG = true)
     def initialize(options = {})
       @options = default_options.merge(options)
-      @app     = options[:app]
+      @app     = @options.delete(:app)
     end
 
     attr_accessor :options, :app

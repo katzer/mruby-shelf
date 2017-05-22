@@ -119,9 +119,16 @@ assert 'Shelf::Server#start' do
 
   Shelf::Server.start(app: -> {}, debug: true, port: -1) do |server|
     block_invoked = true
+    middleware    = Shelf::Server.middleware[server.config[:environment]]
 
     assert_true $DEBUG
     assert_equal(-1, server.config[:port])
+
+    if middleware.any?
+      assert_kind_of middleware.first, server.config[:app]
+    else
+      assert_kind_of Proc, server.config[:app]
+    end
   end
 
   assert_true block_invoked
