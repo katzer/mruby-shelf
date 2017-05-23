@@ -124,11 +124,41 @@ Shelf::Server.start(
 )
 ```
 
-The middleware chain can be defined per environment:
+The default middleware stack can be extended per environment:
 
 ```ruby
 Shelf::Server.middleware[:production] << MyCustomMiddleware
 ```
+
+## Middleware
+
+Shelf comes with some useful middlewares. These can be defined by app or by environment.
+
+- ContentLength
+
+  ```ruby
+  app = Shelf::Builder.app do
+    use Shelf::ContentLength
+    run ->(env) { [200, {}, ['A barebones shelf app']] }
+  end
+
+  app.call('REQUEST_METHOD' => 'GET', 'PATH_INFO' => '/')
+  # => [200, { 'Content-Length' => 21 }, ['A barebones shelf app']]
+  ```
+
+- Static
+
+  ```ruby
+  app = Shelf::Builder.app do
+    use Shelf::Static, urls: { '/' => 'index.html' }, root: 'public'
+    run ->(env) { [200, {}, ['A barebones shelf app']] }
+  end
+
+  app.call('REQUEST_METHOD' => 'GET', 'PATH_INFO' => '/')
+  # => [200, { 'Content-Length' => xxx, 'Content-Type': 'text/html; charset=utf-8' }, ['<html>...</html>']]
+  ```
+
+  - See [here][static] for more samples.
 
 
 ## Development
@@ -164,5 +194,6 @@ Made with :yum: from Leipzig
 [mruby]: https://github.com/mruby/mruby
 [mruby-r3]: https://github.com/katzer/mruby-r3
 [mruby-simplehttpserver]: https://github.com/matsumotory/mruby-simplehttpserver
+[static]: mrblib/shelf/static.rb
 [license]: http://opensource.org/licenses/MIT
 [appplant]: www.appplant.de
