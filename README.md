@@ -170,7 +170,8 @@ Shelf comes with some useful middlewares. These can be defined by app or by envi
   # => [200, { 'Content-Length' => xxx, 'Content-Type': 'text/html; charset=utf-8' }, ['<html>...</html>']]
   ```
 
-  - See [here][static] for more samples.
+  - See [here][static] for more samples
+  - Requires [mruby-io][mruby-io]
 
 - Logger
 
@@ -184,7 +185,8 @@ Shelf comes with some useful middlewares. These can be defined by app or by envi
   # => [200, {}, ['Log-Level: 1']]
   ```
 
-  - Writes to `env[SHELF_ERRORS]` which is _$stderr_ by default.
+  - Writes to `env[SHELF_ERRORS]` which is _$stderr_ by default
+  - Requires [mruby-logger][mruby-logger]
 
 
 ## Development
@@ -219,6 +221,8 @@ Made with :yum: from Leipzig
 [rack]: https://github.com/rack/rack
 [mruby]: https://github.com/mruby/mruby
 [mruby-r3]: https://github.com/katzer/mruby-r3
+[mruby-logger]: https://github.com/katzer/mruby-logger
+[mruby-io]: https://github.com/iij/mruby-io
 [mruby-simplehttpserver]: https://github.com/matsumotory/mruby-simplehttpserver
 [static]: mrblib/shelf/static.rb#L31
 [license]: http://opensource.org/licenses/MIT

@@ -61,7 +61,7 @@ module Shelf
     #
     # @return [ Shelf::Static ]
     def initialize(app, options)
-      raise 'Shelf::Static required mruby-io' unless Object.const_defined? :File
+      raise 'Shelf::Static requires mruby-io' unless Object.const_defined? :File
 
       @app   = app
       @urls  = options[:urls] || ['/favicon.ico']
