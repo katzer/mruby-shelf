@@ -172,6 +172,20 @@ Shelf comes with some useful middlewares. These can be defined by app or by envi
 
   - See [here][static] for more samples.
 
+- Logger
+
+  ```ruby
+  app = Shelf::Builder.app do
+    use Shelf::Logger, Logger::INFO
+    run ->(env) { [200, {}, [Log-Level: "#{env['shelf.logger'].level}"] }
+  end
+
+  app.call('REQUEST_METHOD' => 'GET', 'PATH_INFO' => '/')
+  # => [200, {}, ['Log-Level: 1']]
+  ```
+
+  - Writes to `env[SHELF_ERRORS]` which is _$stderr_ by default.
+
 
 ## Development
 
