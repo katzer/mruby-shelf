@@ -90,5 +90,42 @@ module Shelf
 
     # Responses with HTTP status codes that should not have an entity body
     STATUS_WITH_NO_ENTITY_BODY = (100..199).to_a << 204 << 304
+
+    # Clean any '..' from path to never leave the root directory.
+    #
+    # clean_path_info ''
+    # => '/'
+    # clean_path_info 'www/..'
+    # => '/'
+    # clean_path_info 'www/css/../js'
+    # => 'www/js'
+    #
+    # @param [ String ] path_info
+    #
+    # @return [ String ]
+    def self.clean_path_info(path_info)
+      parts = path_info.split ::File::SEPARATOR
+      clean = []
+
+      parts.each do |part|
+        next if part.empty? || part == '.'
+        part == '..' ? clean.pop : clean << part
+      end
+
+      clean.unshift '/' if parts.empty? || parts.first.empty?
+
+      ::File.join(clean)
+    end
+
+    NULL_BYTE = "\0".freeze
+
+    # Test if the path is valid and does not contain any malicious tokens.
+    #
+    # @param [ String ] path The path to check for.
+    #
+    # @return [ Boolean ]
+    def self.valid_path?(path)
+      !path.include? NULL_BYTE
+    end
   end
 end

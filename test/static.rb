@@ -90,3 +90,18 @@ assert 'Static', 'OPTIONS' do
   assert_equal '0', headers[CONTENT_LENGTH]
   assert_true body.empty?
 end
+
+assert 'Static', 'null byte' do
+  app   = build_app urls: { '/' => "Rakefile\0" }
+  code, = app.call(env_for('/'))
+
+  assert_equal 400, code
+end
+
+assert 'Static', 'dot dot slash' do
+  mruby = File.join(ROOT, 'mruby')
+  app   = build_app urls: { '/' => '../mrblib/shelf.rb' }, root: mruby
+  code, = app.call(env_for('/'))
+
+  assert_equal 404, code
+end

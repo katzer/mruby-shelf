@@ -120,6 +120,7 @@ module Shelf
 
       path = get_path(env[PATH_INFO])
 
+      return fail(400, 'Bad Request') unless Utils.valid_path?(path)
       return fail(404, "File not found: #{path}") unless can_read? path
 
       serving(path, env)
@@ -151,9 +152,9 @@ module Shelf
     # @return [ String ]
     def get_path(path)
       if overwrite_file_path?(path)
-        path = add_index_root?(path) ? path + @index : @urls[path]
+        path = add_index_root?(path) ? (path + @index) : @urls[path]
       end
-      ::File.join(@root, path)
+      File.join(@root, Utils.clean_path_info(path))
     end
 
     # Test if file specified by path exists and is readable.
@@ -162,7 +163,7 @@ module Shelf
     #
     # @return [ Boolean ]
     def can_read?(path)
-      ::File.file?(path)
+      File.file?(path)
     rescue FileError
       false
     end
@@ -173,7 +174,7 @@ module Shelf
     #
     # @return [ String ] nil if not found.
     def read_asset(path)
-      fp = ::File.open(path, 'rb')
+      fp = open(path, 'rb')
       fp.read
     ensure
       fp.close
@@ -202,7 +203,7 @@ module Shelf
     #
     # @return [ String ]
     def mime_type(path)
-      Mime.mime_type(::File.extname(path))
+      Mime.mime_type(File.extname(path))
     end
   end
 end
