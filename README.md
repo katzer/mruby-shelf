@@ -146,6 +146,18 @@ Shelf comes with some useful middlewares. These can be defined by app or by envi
   # => [200, { 'Content-Length' => 21 }, ['A barebones shelf app']]
   ```
 
+- Head
+
+  ```ruby
+  app = Shelf::Builder.app do
+    use Shelf::Head
+    run ->(env) { [200, {}, ['A barebones shelf app']] }
+  end
+
+  app.call('REQUEST_METHOD' => 'HEAD', 'PATH_INFO' => '/')
+  # => [200, { 'Content-Length' => 21 }, []]
+  ```
+
 - Static
 
   ```ruby
