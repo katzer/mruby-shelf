@@ -49,7 +49,7 @@ module Shelf
       return path_not_found     unless params && server_match?(env, host)
       return method_not_allowed if @tree.mismatch? path, method
 
-      env[SHELF_REQUEST_QUERY_HASH] = params
+      store_query_hash_into_env(params, env)
 
       app.call(env)
     end
@@ -74,6 +74,20 @@ module Shelf
       end
 
       @tree.compile
+    end
+
+    # Save the parsed params from R3 into SHELF_REQUEST_QUERY_HASH.
+    #
+    # @param [ Hash ] hsh
+    # @param [ Hash ] env
+    #
+    # @return [ Void ]
+    def store_query_hash_into_env(hsh, env)
+      if env.include? SHELF_REQUEST_QUERY_HASH
+        env[SHELF_REQUEST_QUERY_HASH] = env[SHELF_REQUEST_QUERY_HASH].merge(hsh)
+      else
+        env[SHELF_REQUEST_QUERY_HASH] = hsh
+      end
     end
 
     # Finds out if the requesting host matches the specified host.

@@ -159,6 +159,20 @@ Shelf comes with some useful middlewares. These can be defined by app or by envi
   # => [200, { 'Content-Length' => 21, 'Content-Type' => 'text/plain' }, ['A barebones shelf app']]
   ```
 
+- QueryParser
+
+  ```ruby
+  app = Shelf::Builder.app do
+    map('/users/{id}') do
+      use Shelf::QueryParser
+      run ->(env) { [200, env['shelf.request.query_hash'], []] }
+    end
+  end
+
+  app.call('REQUEST_METHOD' => 'GET', 'PATH_INFO' => '/users/1', 'QUERY_STRING' => 'field=age&field=name')
+  # => [200, { 'id' => '1', 'field' => ['age', 'name'] }, []]
+  ```
+
 - Head
 
   ```ruby
