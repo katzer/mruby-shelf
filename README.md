@@ -194,6 +194,6 @@ Made with :yum: from Leipzig
 [mruby]: https://github.com/mruby/mruby
 [mruby-r3]: https://github.com/katzer/mruby-r3
 [mruby-simplehttpserver]: https://github.com/matsumotory/mruby-simplehttpserver
-[static]: mrblib/shelf/static.rb
+[static]: mrblib/shelf/static.rb#L31
 [license]: http://opensource.org/licenses/MIT
 [appplant]: www.appplant.de
