@@ -61,6 +61,8 @@ module Shelf
     #
     # @return [ Shelf::Static ]
     def initialize(app, options)
+      raise 'Shelf::Static required mruby-io' unless Object.const_defined? :File
+
       @app   = app
       @urls  = options[:urls] || ['/favicon.ico']
       @index = options[:index]
@@ -137,10 +139,9 @@ module Shelf
         body    = [read_asset(path)]
         headers = { CONTENT_TYPE   => mime_type(path),
                     CONTENT_LENGTH => body[0].bytesize.to_s }
-        body    = [body]
       end
 
-      [200, headers, [body]]
+      [200, headers, body]
     end
 
     # Get the abolsute path to the file.
@@ -190,7 +191,7 @@ module Shelf
           CONTENT_TYPE   => 'text/plain',
           CONTENT_LENGTH => body.size.to_s,
           'X-Cascade' => 'pass'
-        }.merge!(headers),
+        }.merge(headers),
         [body]
       ]
     end

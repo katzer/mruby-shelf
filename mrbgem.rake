@@ -29,4 +29,5 @@ MRuby::Gem::Specification.new('mruby-shelf') do |spec|
   spec.add_dependency 'mruby-env', mgem: 'mruby-env'
 
   spec.add_test_dependency 'mruby-print', core: 'mruby-print'
+  spec.add_test_dependency 'mruby-io',    mgem: 'mruby-io'
 end
