@@ -188,6 +188,20 @@ Shelf comes with some useful middlewares. These can be defined by app or by envi
   - Writes to `env[SHELF_ERRORS]` which is _$stderr_ by default
   - Requires [mruby-logger][mruby-logger]
 
+- CommonLogger
+
+  ```ruby
+  app = Shelf::Builder.app do
+    use Shelf::CommonLogger, Logger.new
+    run ->(env) { [200, {}, ['A barebones shelf app']] }
+  end
+
+  app.call('REQUEST_METHOD' => 'GET', 'PATH_INFO' => '/index.html')
+  # => 127.0.0.1 - [23/05/2017:18:03:36 +0200] "GET /index.html HTTP/1.1" 200 2326
+  ```
+
+  - Requires [mruby-logger][mruby-logger], mruby-time and mruby-sprintf
+
 
 ## Development
 
