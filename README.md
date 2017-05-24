@@ -1,4 +1,4 @@
-# Shelf, a modular webserver interface for mruby <br> [![Build Status](https://travis-ci.org/katzer/mruby-shelf.svg?branch=master)](https://travis-ci.org/katzer/mruby-shelf) [![Build status](https://ci.appveyor.com/api/projects/status/n6wh7qwk3nuhf26e/branch/master?svg=true)](https://ci.appveyor.com/project/katzer/mruby-shelf/branch/master) [![codebeat badge](https://codebeat.co/badges/4d1589cf-53f9-48fe-a13b-c1f1106e7b70)](https://codebeat.co/projects/github-com-katzer-mruby-shelf-master)
+# Shelf, a modular webserver interface for mruby <br> [![Build Status](https://travis-ci.org/katzer/mruby-shelf.svg?branch=master)](https://travis-ci.org/katzer/mruby-shelf) [![Build status](https://ci.appveyor.com/api/projects/status/n6wh7qwk3nuhf26e/branch/master?svg=true)](https://ci.appveyor.com/project/katzer/mruby-shelf/branch/master) [![codebeat badge](https://codebeat.co/assets/svg/badges/A-398b39-669406e9e1b136187b91af587d4092b0160370f271f66a651f444b990c2730e9.svg)](https://codebeat.co/projects/github-com-katzer-mruby-shelf-master)
 
 Inspired by [Rack][rack], empowers [mruby][mruby], a work in progress!
 
