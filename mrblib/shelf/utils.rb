@@ -104,7 +104,7 @@ module Shelf
     #
     # @return [ String ]
     def self.clean_path_info(path_info)
-      parts = path_info.split ::File::SEPARATOR
+      parts = path_info.split File::SEPARATOR
       clean = []
 
       parts.each do |part|
@@ -114,7 +114,7 @@ module Shelf
 
       clean.unshift '/' if parts.empty? || parts.first.empty?
 
-      ::File.join(clean)
+      File.join(clean)
     end
 
     NULL_BYTE = "\0".freeze

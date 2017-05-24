@@ -194,7 +194,7 @@ Shelf comes with some useful middlewares. These can be defined by app or by envi
   end
 
   app.call('REQUEST_METHOD' => 'GET', 'PATH_INFO' => '/')
-  # => [200, { 'Content-Length' => xxx, 'Content-Type': 'text/html; charset=utf-8' }, ['<html>...</html>']]
+  # => [200, { 'Content-Length' => xxx, 'Content-Type' => 'text/html; charset=utf-8' }, ['<html>...</html>']]
   ```
 
   - See [here][static] for more samples
@@ -228,6 +228,22 @@ Shelf comes with some useful middlewares. These can be defined by app or by envi
   ```
 
   - Requires [mruby-logger][mruby-logger], mruby-time and mruby-sprintf
+
+- CatchError
+
+  ```ruby
+  app = Shelf::Builder.app do
+    use Shelf::CatchError
+    run ->(env) { undef_method_call }
+  end
+
+  app.call('REQUEST_METHOD' => 'GET', 'PATH_INFO' => '/')
+  # => [500, { 'Content-Length' => 21, 'Content-Type' => 'text/plain' }, ['Internal Server Error']]
+  ```
+
+  - Requires [mruby-io][mruby-io]
+  - Writes all expection traces to `env[SHELF_ERRORS]`
+  - Response body contains the stack trace under development mode
 
 
 ## Development

@@ -21,32 +21,52 @@
 # SOFTWARE.
 
 module Shelf
-  # Parse the query and put the params into the shelf.request.query_hash.
-  class QueryParser
+  # Shelf::CatchError catches all exceptions raised from the app it
+  # wraps, logs them and returns 500 status code.
+  class CatchError
+    # Initialized with Shelf app.
+    #
     def initialize(app)
       @app = app
     end
 
+    # Removes an empty body for all HEAD requests.
+    #
+    # @param [ Hash ] env HTTP request environment.
+    #
+    # @return [ Array ] HTTP response array with updated headers.
     def call(env)
-      parse_query(env) if env[QUERY_STRING]
       @app.call(env)
+    rescue StandardError => e
+      exception_string = dump_exception(e)
+
+      env[SHELF_ERRORS] ||= $stderr
+      env[SHELF_ERRORS].puts(exception_string)
+      env[SHELF_ERRORS].flush
+
+      body = production? ? Utils::HTTP_STATUS_CODES[500] : exception_string
+
+      internal_server_error(body)
     end
 
     private
 
-    def parse_query(env)
-      params = env[SHELF_REQUEST_QUERY_HASH] ||= {}
+    def dump_exception(e)
+      string = "#{e.class}: #{e.message}\n"
+      string << e.backtrace.map { |l| "\t#{l}" }.join("\n")
+      string
+    end
 
-      env[QUERY_STRING].split('&').each do |p|
-        next if p.empty?
-        k, v = p.split('=', 2)
+    def production?
+      ENV['SHELF_ENV'] == 'production'
+    end
 
-        case (item = params[k])
-        when Array then item << v
-        when nil   then params[k] = v
-        else            params[k] = [item, v]
-        end
-      end
+    def internal_server_error(body)
+      [
+        500,
+        { CONTENT_TYPE => 'text/plain', CONTENT_LENGTH => body.bytesize.to_s },
+        [body]
+      ]
     end
   end
 end
