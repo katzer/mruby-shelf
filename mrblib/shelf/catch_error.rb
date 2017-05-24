@@ -40,33 +40,48 @@ module Shelf
     rescue StandardError => e
       exception_string = dump_exception(e)
 
-      env[SHELF_ERRORS] ||= $stderr
-      env[SHELF_ERRORS].puts(exception_string)
-      env[SHELF_ERRORS].flush
+      write_exception_to_shelf_errors(exception_string, env)
 
       body = production? ? Utils::HTTP_STATUS_CODES[500] : exception_string
 
-      internal_server_error(body)
+      [
+        500,
+        { CONTENT_TYPE => 'text/plain', CONTENT_LENGTH => body.bytesize.to_s },
+        [body]
+      ]
     end
 
     private
 
+    # Dump the exception object into a multi line string with backtrace info.
+    #
+    # @param [ Exception ] e The exception to dump.
+    #
+    # @return [ String ]
     def dump_exception(e)
       string = "#{e.class}: #{e.message}\n"
       string << e.backtrace.map { |l| "\t#{l}" }.join("\n")
       string
     end
 
-    def production?
-      ENV['SHELF_ENV'] == 'production'
+    # Write the dumped exception trace to SHELF_ERRORS if possible.
+    #
+    # @param [ String ] msg The message to log.
+    # @param [ Hash ] env The Shelf request object.
+    #
+    # @return [ Void ]
+    def write_exception_to_shelf_errors(msg, env)
+      return unless env.include?(SHELF_ERRORS) || $stderr
+      env[SHELF_ERRORS] ||= $stderr
+      env[SHELF_ERRORS].puts(msg)
+      env[SHELF_ERRORS].flush
     end
 
-    def internal_server_error(body)
-      [
-        500,
-        { CONTENT_TYPE => 'text/plain', CONTENT_LENGTH => body.bytesize.to_s },
-        [body]
-      ]
+    # If the app is running in production mode.
+    #
+    # @return [ Boolean ]
+    def production?
+      ENV['SHELF_ENV'] == 'production'
     end
   end
 end
