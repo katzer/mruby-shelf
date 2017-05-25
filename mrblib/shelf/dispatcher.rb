@@ -44,9 +44,9 @@ module Shelf
       path   = env[PATH_INFO]
       method = R3.method_code_for(env[REQUEST_METHOD])
 
-      params, (host, app) = @tree.match(path)
+      params, app = @tree.match(path)
 
-      return path_not_found     unless params && server_match?(env, host)
+      return path_not_found     unless params
       return method_not_allowed if @tree.mismatch? path, method
 
       store_query_hash_into_env(params, env)
@@ -65,12 +65,10 @@ module Shelf
       @tree = R3::Tree.new(map.size)
       map.each do |method_and_route, app|
         method, route = method_and_route
-        match_data    = %r{\Ahttps?://(.*?)(/.*)}.match(route)
-        host, route   = match_data[0, 1] if match_data
 
         raise ArgumentError, 'path need to start with /' unless route[0] == '/'
 
-        @tree.add(route, method, [host, app])
+        @tree.add(route, method, app)
       end
 
       @tree.compile
@@ -88,25 +86,6 @@ module Shelf
       else
         env[SHELF_REQUEST_QUERY_HASH] = hsh
       end
-    end
-
-    # Finds out if the requesting host matches the specified host.
-    #
-    # @param [ Hash ] env Constains the requested host.
-    # @param [ String ] host The specified host.
-    #
-    # @return [ Boolean ]
-    def server_match?(env, host)
-      horst  = env[HTTP_HOST]
-      server = env[SERVER_NAME]
-      port   = env[SERVER_PORT]
-
-      is_same_server = casecmp?(horst, server) ||
-                       casecmp?(horst, "#{server}:#{port}")
-
-      casecmp?(horst, host) \
-      || casecmp?(server, host) \
-      || (!host && is_same_server)
     end
 
     # Default response if path could not be resolved.
@@ -129,20 +108,6 @@ module Shelf
         { CONTENT_TYPE => 'text/plain', 'X-Cascade' => 'pass' },
         ["#{Utils::HTTP_STATUS_CODES[405]}\n"]
       ]
-    end
-
-    # Compares two string for equality.
-    #
-    def casecmp?(v1, v2)
-      # if both nil, or they're the same string
-      return true if v1 == v2
-
-      # if either are nil... (but they're not the same)
-      return false if v1.nil?
-      return false if v2.nil?
-
-      # otherwise check they're not case-insensitive the same
-      v1.casecmp(v2) == 0
     end
   end
 end
