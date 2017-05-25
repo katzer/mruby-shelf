@@ -42,14 +42,21 @@ module Shelf
       new(options).start(&blk)
     end
 
+    # Default middleware layer used for logging.
+    #
+    # @return [ Class ]
+    def self.logging_middleware
+      ->(server) { server.options[:quiet] ? nil : CommonLogger }
+    end
+
     # List of middleware per environment.
     #
     # @return [ Hash<String, Array>]
     def self.middleware
       @m ||= begin
         m = Hash.new { |h, k| h[k] = [] }
-        m['production']  = [ContentLength]
-        m['development'] = [ContentLength]
+        m['production']  = [ContentLength, logging_middleware]
+        m['development'] = [ContentLength, logging_middleware]
         m
       end
     end
