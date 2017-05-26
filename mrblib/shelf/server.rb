@@ -106,6 +106,7 @@ module Shelf
 
       trap_int_signal_to_shutdown_server
 
+      options.delete(:app)
       server.run(build_app(app), options, &blk)
     end
 
