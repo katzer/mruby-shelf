@@ -117,7 +117,7 @@ module Shelf
     # @return [ Hash ]
     def default_options
       environment  = ENV['SHELF_ENV'] || 'development'
-      default_host = environment == 'development' ? 'localhost' : nil
+      default_host = environment == 'development' ? 'localhost' : '0.0.0.0'
 
       { environment: environment, port: 9292, host: default_host }
     end

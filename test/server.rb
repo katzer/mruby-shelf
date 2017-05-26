@@ -69,7 +69,7 @@ assert 'Shelf::Server#initialize', 'SHELF_ENV' do
   ENV['SHELF_ENV'] = 'production'
   server = Shelf::Server.new
   assert_equal 'production', server.options[:environment]
-  assert_nil server.options[:host]
+  assert_equal '0.0.0.0', server.options[:host]
 
   ENV.delete 'SHELF_ENV'
 end

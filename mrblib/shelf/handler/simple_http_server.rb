@@ -26,8 +26,8 @@ module Shelf
       # Create an instance of SimpleHttpServer by passing the specified options
       # and runs the server.
       def self.run(app, options = {})
-        env  = ENV['SHELF_ENV'] || 'development'
-        host = env == 'development' ? 'localhost' : nil
+        host = options[:host] || 'localhost' if ENV['SHELF_ENV'] != 'production'
+        host = nil if host == '0.0.0.0'
         opts = { server_ip: host, port: 8080, app: app }.merge(options)
 
         server = ::SimpleHttpServer.new(opts)
