@@ -135,7 +135,7 @@ assert 'Shelf::Builder.call', 'restrict request method' do
 end
 
 assert 'Shelf::Builder.call', 'with slugs' do
-  app = Shelf::Builder.app do
+  app = Shelf::Builder.new do
     map('/users/{id}') do
       run ->(env) { [200, {}, [env[SHELF_REQUEST_QUERY_HASH][:id]]] }
     end

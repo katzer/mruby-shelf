@@ -183,6 +183,13 @@ module Shelf
       @use.reverse.inject(app) { |a, e| e[a] }
     end
 
+    # Transforms the builder into a shelf app.
+    #
+    # @return [ Proc ]
+    def call(env)
+      to_app.call(env)
+    end
+
     private
 
     def generate_map(default_app, mapping)
