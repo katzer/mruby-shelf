@@ -193,7 +193,7 @@ module Shelf
     private
 
     def generate_map(default_app, mapping)
-      mapped = default_app ? { '/' => default_app } : {}
+      mapped = default_app ? { [R3::GET, '/'] => default_app } : {}
 
       mapping.each do |r, b|
         mapped[r] = self.class.new(default_app, &b).to_app
