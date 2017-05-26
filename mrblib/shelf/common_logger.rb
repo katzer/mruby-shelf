@@ -49,6 +49,8 @@ module Shelf
     end
 
     def call(env)
+      @logger ||= env[SHELF_LOGGER] || env[SHELF_ERRORS]
+
       began_at             = Time.now
       status, header, body = @app.call(env)
 
@@ -66,7 +68,7 @@ module Shelf
     #
     # @return [ Void ]
     def log(msg)
-      logger.write(msg) if logger
+      @logger.write(msg) if @logger
     end
 
     # Extract the content-length info from the headers or returns a placeholder.
@@ -78,13 +80,6 @@ module Shelf
       value = headers[CONTENT_LENGTH]
       return '-' unless value
       value.to_s == '0' ? '-' : value
-    end
-
-    # Find the logger instance to use for logging.
-    #
-    # @return [ Object ]
-    def logger
-      @logger ||= env[SHELF_LOGGER] || env[SHELF_ERRORS]
     end
 
     # Format the date time object into a string.
