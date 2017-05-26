@@ -54,46 +54,78 @@ module Shelf
       began_at             = Time.now
       status, header, body = @app.call(env)
 
-      log(env, status, header, began_at)
+      message = message_get(env, status, header, began_at)
+      log(message)
 
       [status, header, body]
     end
 
     private
 
-    def log(env, status, header, began_at)
-      now = Time.now
-
-      msg = CFORMAT % [
-        env['HTTP_X_FORWARDED_FOR'] || env['REMOTE_ADDR'] || '-',
-        env['REMOTE_USER'] || '-',
-        format_datetime(now),
-        env[REQUEST_METHOD],
-        env[PATH_INFO],
-        env[QUERY_STRING].to_s.empty? ? '' : "?#{env[QUERY_STRING]}",
-        env[HTTP_VERSION],
-        status.to_s[0..3],
-        extract_content_length(header),
-        now - began_at
-      ]
-
-      logger.write(msg)
+    # Logs the message and possibly writes them to stdout.
+    #
+    # @param [ String ] msg The message to log.
+    #
+    # @return [ Void ]
+    def log(msg)
+      logger.write(msg) if logger
     end
 
+    # Extract the content-length info from the headers or returns a placeholder.
+    #
+    # @param [ Hash ] headers The headers from the shelf response.
+    #
+    # @return [ String ]
     def extract_content_length(headers)
       value = headers[CONTENT_LENGTH]
       return '-' unless value
       value.to_s == '0' ? '-' : value
     end
 
+    # Find the logger instance to use for logging.
+    #
+    # @return [ Object ]
     def logger
-      @logger || env[SHELF_LOGGER] || env[SHELF_ERRORS]
+      @logger ||= env[SHELF_LOGGER] || env[SHELF_ERRORS]
     end
 
-    def format_datetime(t = Time.now)
+    # Format the date time object into a string.
+    #
+    # @param [ Time ] t The time object to format.
+    #
+    # @return [ String ]
+    def format_datetime(t)
       format DFORMAT, t.day, t.mon, t.year, t.hour, t.min, t.sec, t.zone
     end
 
+    # The message to log.
+    #
+    # @params [ Hash ] env The Shelf request.
+    # @params [ Int ] status The statud code of the response.
+    # @params [ Hash ] headers The env of the Shelf response.
+    # @params [ Time ] began_at Timestamp of the received request.
+    #
+    # @return [ String ]
+    def message_get(env, status, headers, began_at)
+      now = Time.now
+
+      format(CFORMAT,
+             env['HTTP_X_FORWARDED_FOR'] || env['REMOTE_ADDR'] || '-',
+             env['REMOTE_USER'] || '-',
+             format_datetime(now),
+             env[REQUEST_METHOD],
+             env[PATH_INFO],
+             env[QUERY_STRING].to_s.empty? ? '' : "?#{env[QUERY_STRING]}",
+             env[HTTP_VERSION],
+             status.to_s[0..3],
+             extract_content_length(headers),
+             now - began_at)
+    end
+
+    # Check if all dependencies are available.
+    # Raises an runtime error if not.
+    #
+    # @return [ Void ]
     def check_deps
       unless Object.const_defined? :Time
         raise 'Shelf::CommonLogger requires mruby-time'

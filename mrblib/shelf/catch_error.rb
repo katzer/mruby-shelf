@@ -81,7 +81,7 @@ module Shelf
     #
     # @return [ Boolean ]
     def production?
-      ENV['SHELF_ENV'] == 'production'
+      !$DEBUG && ENV['SHELF_ENV'] == 'production'
     end
   end
 end

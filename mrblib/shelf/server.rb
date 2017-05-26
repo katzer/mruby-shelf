@@ -46,7 +46,7 @@ module Shelf
     #
     # @return [ Class ]
     def self.logging_middleware
-      ->(server) { server.options[:quiet] ? nil : CommonLogger }
+      ->(server) { CommonLogger unless server.options[:quiet] }
     end
 
     # List of middleware per environment.
