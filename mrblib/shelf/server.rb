@@ -55,8 +55,8 @@ module Shelf
     def self.middleware
       @m ||= begin
         m = Hash.new { |h, k| h[k] = [] }
-        m['production']  = [ContentLength, logging_middleware]
-        m['development'] = [ContentLength, logging_middleware]
+        m['production']  = [logging_middleware, ContentLength, CatchError]
+        m['development'] = [logging_middleware, ContentLength, CatchError]
         m
       end
     end

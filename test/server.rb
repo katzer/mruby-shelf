@@ -104,17 +104,16 @@ assert 'Shelf::Server#server' do
 end
 
 assert 'Shelf::Server#shutdown' do
-  assert_nothing_raised do
-    Shelf::Server.new.shutdown
-  end
+  assert_nothing_raised { Shelf::Server.new.shutdown }
 end
 
 assert 'Shelf::Server#start' do
+  app = -> {}
   block_invoked = false
 
-  assert_equal 'server started', Shelf::Server.start(app: -> {})
+  assert_equal 'server started', Shelf::Server.start(app: app)
 
-  Shelf::Server.start(app: -> {}, debug: true, port: -1) do |server|
+  Shelf::Server.start(app: app, debug: true, port: -1) do |server|
     block_invoked = true
     middleware    = Shelf::Server.middleware[server.config[:environment]]
 
@@ -122,9 +121,9 @@ assert 'Shelf::Server#start' do
     assert_equal(-1, server.config[:port])
 
     if middleware.any?
-      assert_kind_of middleware.first, server.config[:app]
+      assert_not_equal app, server.config[:app]
     else
-      assert_kind_of Proc, server.config[:app]
+      assert_equal app, server.config[:app]
     end
   end
 
