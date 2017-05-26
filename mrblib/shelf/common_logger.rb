@@ -49,7 +49,7 @@ module Shelf
     end
 
     def call(env)
-      @logger ||= env[SHELF_LOGGER] || env[SHELF_ERRORS]
+      @logger ||= env[SHELF_LOGGER] || env[SHELF_ERRORS] || $stdout
 
       began_at             = Time.now
       status, header, body = @app.call(env)
