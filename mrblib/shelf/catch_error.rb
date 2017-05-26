@@ -59,9 +59,9 @@ module Shelf
     #
     # @return [ String ]
     def dump_exception(e)
-      string = "#{e.class}: #{e.message}\n"
-      string << e.backtrace.map { |l| "\t#{l}" }.join("\n")
-      string
+      strings = ["#{e.class}: #{e.message}\n"]
+      e.backtrace.each { |l| strings << "\t#{l}" }
+      strings.join("\n")
     end
 
     # Write the dumped exception trace to SHELF_ERRORS if possible.

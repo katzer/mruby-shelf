@@ -28,13 +28,13 @@ class StringIO
   def flush; end
 
   def to_s
-    @msgs.join("\n")
+    @msgs.join("\n") if @msgs
   end
 
   alias inspect to_s
 
   def clear
-    @msgs.clear
+    @msgs.clear if @msgs
   end
 end
 

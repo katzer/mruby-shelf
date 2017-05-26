@@ -61,8 +61,6 @@ module Shelf
     #
     # @return [ Shelf::Static ]
     def initialize(app, options)
-      raise 'Shelf::Static requires mruby-io' unless Object.const_defined? :File
-
       @app   = app
       @urls  = options[:urls] || ['/favicon.ico']
       @index = options[:index]
@@ -93,7 +91,7 @@ module Shelf
     #
     # @return [ Boolean ]
     def route_file?(path)
-      @urls.is_a?(Array) && @urls.any? { |url| path.start_with? url }
+      @urls.is_a?(Array) && @urls.any? { |url| path.index(url) == 0 }
     end
 
     # Tests if the path points to a file.

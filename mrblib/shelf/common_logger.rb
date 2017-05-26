@@ -46,8 +46,6 @@ module Shelf
     def initialize(app, logger = nil)
       @app    = app
       @logger = logger
-
-      check_deps
     end
 
     def call(env)
@@ -120,19 +118,6 @@ module Shelf
              status.to_s[0..3],
              extract_content_length(headers),
              now - began_at)
-    end
-
-    # Check if all dependencies are available.
-    # Raises an runtime error if not.
-    #
-    # @return [ Void ]
-    def check_deps
-      unless Object.const_defined? :Time
-        raise 'Shelf::CommonLogger requires mruby-time'
-      end
-
-      return if respond_to? :format
-      raise 'Shelf::CommonLogger requires mruby-sprintf'
     end
   end
 end
