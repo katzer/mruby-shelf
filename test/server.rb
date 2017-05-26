@@ -103,9 +103,9 @@ assert 'Shelf::Server#server' do
   assert_equal Object, Shelf::Server.new(server: 'superfastobject').server
 end
 
-assert 'Shelf::Server#trap_int_signal_to_shutdown_server' do
+assert 'Shelf::Server#shutdown' do
   assert_nothing_raised do
-    Shelf::Server.new.trap_int_signal_to_shutdown_server
+    Shelf::Server.new.shutdown
   end
 end
 

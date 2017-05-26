@@ -104,10 +104,23 @@ module Shelf
     def start(&blk)
       $DEBUG = true if options[:debug]
 
-      trap_int_signal_to_shutdown_server
+      trap(:INT) { shutdown } if respond_to? :trap
 
       options.delete(:app)
       server.run(build_app(app), options, &blk)
+    end
+
+    # Tries to shutdown the running server.
+    #
+    # @param [ Int ] exit_code Defaults to: 0
+    #
+    # @return [ Void ]
+    def shutdown(exit_code = 0)
+      if server.respond_to?(:shutdown)
+        server.shutdown
+      elsif respond_to? :exit
+        exit(exit_code)
+      end
     end
 
     private
@@ -138,20 +151,6 @@ module Shelf
       end
 
       app
-    end
-
-    # Try to shutdown the server if the process received the INT signal.
-    #
-    # @return [ Void ]
-    def trap_int_signal_to_shutdown_server
-      return unless respond_to? :trap
-      trap(:INT) do
-        if server.respond_to?(:shutdown)
-          server.shutdown
-        elsif respond_to? :exit
-          exit
-        end
-      end
     end
   end
 end
