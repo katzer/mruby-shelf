@@ -39,7 +39,6 @@ module Shelf
 
       if    !Utils::STATUS_WITH_NO_ENTITY_BODY.include?(status.to_i) \
          && !headers[CONTENT_LENGTH] \
-         && !headers[TRANSFER_ENCODING] \
          && body.respond_to?(:to_a)
 
         length = body.reduce(0) { |len, part| len + part.bytesize }
