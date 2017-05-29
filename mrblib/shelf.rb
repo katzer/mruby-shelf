@@ -21,10 +21,13 @@
 # SOFTWARE.
 
 module Shelf
+  CONTENT_LENGTH    = 'Content-Length'.freeze
+  CONTENT_TYPE      = 'Content-Type'.freeze
+  DATE              = 'Date'.freeze
   HTTP_HOST         = 'HTTP_HOST'.freeze
   HTTP_VERSION      = 'HTTP_VERSION'.freeze
   HTTPS             = 'HTTPS'.freeze
-  DATE              = 'Date'.freeze
+  LOCATION          = 'Location'.freeze
   PATH_INFO         = 'PATH_INFO'.freeze
   REQUEST_METHOD    = 'REQUEST_METHOD'.freeze
   REQUEST_PATH      = 'REQUEST_PATH'.freeze
@@ -34,13 +37,6 @@ module Shelf
   SERVER_NAME       = 'SERVER_NAME'.freeze
   SERVER_ADDR       = 'SERVER_ADDR'.freeze
   SERVER_PORT       = 'SERVER_PORT'.freeze
-  CACHE_CONTROL     = 'Cache-Control'.freeze
-  CONTENT_LENGTH    = 'Content-Length'.freeze
-  CONTENT_TYPE      = 'Content-Type'.freeze
-  SET_COOKIE        = 'Set-Cookie'.freeze
-  TRANSFER_ENCODING = 'Transfer-Encoding'.freeze
-  HTTP_COOKIE       = 'HTTP_COOKIE'.freeze
-  ETAG              = 'ETag'.freeze
 
   # HTTP method verbs
   GET     = 'GET'.freeze
@@ -61,4 +57,13 @@ module Shelf
   SHELF_REQUEST_FORM_VARS              = 'shelf.request.form_vars'.freeze
   SHELF_REQUEST_QUERY_HASH             = 'shelf.request.query_hash'.freeze
   SHELF_URL_SCHEME                     = 'shelf.url_scheme'.freeze
+
+  # Shorthand entry point to start the server.
+  #
+  # @param [ Object ] app The shelf app to run.
+  #
+  # @return [ Void ]
+  def self.run(app)
+    Shelf::Server.start app: app
+  end
 end
