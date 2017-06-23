@@ -97,6 +97,14 @@ assert 'Shelf::Builder.map(str, &b)' do
   assert_nothing_raised { app2.to_app }
 end
 
+assert 'Shelf::Builder.map', 'with custom data' do
+  app = Shelf::Builder.app do
+    get('/data', ['data']) { run ->(env) { [200, {}, env[SHELF_R3_DATA]] } }
+  end
+
+  assert_equal ['data'], app.call(env_for('/data'))[2]
+end
+
 assert 'Shelf::Builder.use' do
   app1 = Shelf::Builder.new
   assert_nothing_raised { app1.use RespondWith201 }

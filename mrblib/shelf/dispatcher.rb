@@ -44,12 +44,13 @@ module Shelf
       path   = env[PATH_INFO]
       method = R3.method_code_for(env[REQUEST_METHOD])
 
-      params, app = @tree.match(path)
+      params, (app, data) = @tree.match(path)
 
       return path_not_found     unless params
       return method_not_allowed if @tree.mismatch? path, method
 
       store_query_hash_into_env(params, env)
+      env[SHELF_R3_DATA] = data if data
 
       app.call(env)
     end
@@ -64,11 +65,11 @@ module Shelf
     def remap(map)
       @tree = R3::Tree.new(map.size)
       map.each do |method_and_route, app|
-        method, route = method_and_route
+        method, route, data = method_and_route
 
         raise ArgumentError, 'path need to start with /' unless route[0] == '/'
 
-        @tree.add(route, method, app)
+        @tree.add(route, method, [app, data])
       end
 
       @tree.compile

@@ -53,6 +53,7 @@ module Shelf
   # Shelf environment variables
   SHELF_ERRORS                         = 'shelf.errors'.freeze
   SHELF_LOGGER                         = 'shelf.logger'.freeze
+  SHELF_R3_DATA                        = 'shelf.r3.data'.freeze
   SHELF_REQUEST_FORM_HASH              = 'shelf.request.form_hash'.freeze
   SHELF_REQUEST_FORM_VARS              = 'shelf.request.form_vars'.freeze
   SHELF_REQUEST_QUERY_HASH             = 'shelf.request.query_hash'.freeze

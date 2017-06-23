@@ -146,32 +146,36 @@ module Shelf
     # This example includes a piece of middleware which will run before requests
     # hit +Heartbeat+.
     #
-    def map(path, method = R3::ANY, &block)
-      (@map ||= {})[[method, path]] = block
+    def map(path, method = R3::ANY, *data, &block)
+      (@map ||= {})[[method, path, *data]] = block
     end
 
     # Creates a GET route within the application.
     #
-    def get(path, &block)
-      map(path, R3::GET, &block)
+    # @return [ Void ]
+    def get(path, *data, &block)
+      map(path, R3::GET, *data, &block)
     end
 
     # Creates a POST route within the application.
     #
-    def post(path, &block)
-      map(path, R3::POST, &block)
+    # @return [ Void ]
+    def post(path, *data, &block)
+      map(path, R3::POST, *data, &block)
     end
 
     # Creates a PUT route within the application.
     #
-    def put(path, &block)
-      map(path, R3::PUT, &block)
+    # @return [ Void ]
+    def put(path, *data, &block)
+      map(path, R3::PUT, *data, &block)
     end
 
     # Creates a DELETE route within the application.
     #
-    def delete(path, &block)
-      map(path, R3::DELETE, &block)
+    # @return [ Void ]
+    def delete(path, *data, &block)
+      map(path, R3::DELETE, *data, &block)
     end
 
     # Transforms the builder into a shelf app.

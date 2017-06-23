@@ -88,6 +88,18 @@ app.call('REQUEST_METHOD' => 'PUT', 'PATH_INFO' => '/users/1')
 # => [405, { ... }, ['Method Not Allowed']]
 ```
 
+Routes can store any kind of additional data:
+
+```ruby
+app = Shelf::Builder.app do
+  get('data', [Object.new]) { run ->(env) { [200, { ... }, env['shelf.r3.data']] } }
+end
+
+app.call('REQUEST_METHOD' => 'GET', 'PATH_INFO' => '/data')
+# => [200, { ... }, ['#<Object:0x007fd5739dfe40>']]
+```
+
+
 
 ## Handler
 
