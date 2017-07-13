@@ -30,7 +30,11 @@ environment:
     VCVARSALL: C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat
     COMPILER: C:\MinGW
   matrix:
-  - MRUBY_VERSION: 1.2.0
+  - MRUBY_VERSION: 1.3.0
+  - MRUBY_VERSION: head
+
+matrix:
+  allow_failures:
   - MRUBY_VERSION: head
 
 init:
