@@ -48,4 +48,4 @@ build_script:
 - rake compile
 
 test_script:
-# - rake test # Tests run fine on local env hover it hangs on ci-appveyor :`(
+- rake test
