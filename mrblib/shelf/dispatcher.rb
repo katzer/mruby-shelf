@@ -63,7 +63,9 @@ module Shelf
     #
     # @return [ Void ]
     def remap(map)
+      @tree.free if @tree
       @tree = R3::Tree.new(map.size)
+
       map.each do |method_and_route, app|
         method, route, data = method_and_route
 
