@@ -106,7 +106,9 @@ module Shelf
 
       trap(:INT) { shutdown } if respond_to? :trap
 
+      @app = @app.to_app if @app.is_a? Builder
       options.delete(:app)
+
       server.run(build_app(app), options, &blk)
     end
 
