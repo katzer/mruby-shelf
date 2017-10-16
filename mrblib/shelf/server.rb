@@ -143,6 +143,8 @@ module Shelf
     #
     # @return [ Proc ]
     def build_app(app)
+      options[:environment] = ENV['SHELF_ENV'] || options[:environment]
+
       middleware[options[:environment]].reverse.each do |middleware|
         middleware = middleware.call(self) if middleware.respond_to?(:call)
 
