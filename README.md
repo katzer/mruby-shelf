@@ -14,7 +14,6 @@ Shelf::Builder.app do
 end
 ```
 
-
 ## Installation
 
 Add the line below to your `build_config.rb`:
@@ -34,7 +33,6 @@ MRuby::Gem::Specification.new('your-mrbgem') do |spec|
   spec.add_dependency 'mruby-shelf'
 end
 ```
-
 
 ## Builder
 
@@ -99,8 +97,6 @@ app.call('REQUEST_METHOD' => 'GET', 'PATH_INFO' => '/data')
 # => [200, { ... }, ['#<Object:0x007fd5739dfe40>']]
 ```
 
-
-
 ## Handler
 
 The Rack::Handler class is mostly compatible with Shelf::Handler except that it takes the handler class instead of the path string.
@@ -121,7 +117,6 @@ Howver its possible to customize that:
 ```ruby
 ENV['SHELF_HANDLER'] = 'h2o'
 ```
-
 
 ## Server
 
@@ -257,7 +252,6 @@ Shelf comes with some useful middlewares. These can be defined by app or by envi
   - Writes all expection traces to `env[SHELF_ERRORS]`
   - Response body contains the stack trace under development mode
 
-
 ## Development
 
 Clone the repo:
@@ -272,11 +266,19 @@ Run the tests:
 
     $ rake test
 
+## Contributing
+
+Bug reports and pull requests are welcome on GitHub at https://github.com/katzer/mruby-shelf.
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
 
 ## Authors
 
 - Sebastián Katzer, Fa. appPlant GmbH
-
 
 ## License
 
@@ -285,7 +287,6 @@ The mgem is available as open source under the terms of the [MIT License][licens
 Made with :yum: from Leipzig
 
 © 2017 [appPlant GmbH][appplant]
-
 
 [rack]: https://github.com/rack/rack
 [mruby]: https://github.com/mruby/mruby
