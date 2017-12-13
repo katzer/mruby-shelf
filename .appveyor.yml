@@ -45,7 +45,7 @@ init:
 
 build_script:
 - rake mruby
-- DEL /F /Q mruby\build\mrbgems\mruby-io\test
+- DEL /F /Q mruby\build\mrbgems\mruby-io\test\file.rb
 - rake compile
 
 test_script:
