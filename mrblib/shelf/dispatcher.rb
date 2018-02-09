@@ -42,7 +42,7 @@ module Shelf
     # @return [ Void ]
     def call(env)
       path   = env[PATH_INFO]
-      method = R3.method_code_for(env[REQUEST_METHOD])
+      method = R3.method_code(env[REQUEST_METHOD])
 
       params, (app, data) = @tree.match(path)
 
