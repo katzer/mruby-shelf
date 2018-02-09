@@ -37,7 +37,7 @@ matrix:
 
 init:
 - SET PATH=C:\Windows\system32;C:\Windows;C:\Program Files\Git\cmd;%PATH%
-- SET PATH=%COMPILER%\bin;C:\Ruby24-x64\bin;%PATH%;C:\cygwin\bin;
+- SET PATH=%COMPILER%\bin;C:\Ruby25-x64\bin;%PATH%;C:\cygwin\bin;
 - gcc --version
 - ruby --version
 
