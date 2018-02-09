@@ -20,6 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+require "#{MRUBY_ROOT}/lib/mruby/source"
+
 MRuby::Gem::Specification.new('mruby-shelf') do |spec|
   spec.license = 'MIT'
   spec.authors = 'Sebastian Katzer'
@@ -31,5 +33,10 @@ MRuby::Gem::Specification.new('mruby-shelf') do |spec|
   spec.add_test_dependency 'mruby-sprintf', core: 'mruby-sprintf'
   spec.add_test_dependency 'mruby-print',   core: 'mruby-print'
   spec.add_test_dependency 'mruby-time',    core: 'mruby-time'
-  spec.add_test_dependency 'mruby-io',      mgem: 'mruby-io'
+
+  if MRuby::Source::MRUBY_VERSION >= '1.4.0'
+    spec.add_test_dependency 'mruby-io',    core: 'mruby-io'
+  else
+    spec.add_test_dependency 'mruby-io',    mgem: 'mruby-io'
+  end
 end
