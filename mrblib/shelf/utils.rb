@@ -20,8 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# rubocop:disable MutableConstant
-
 module Shelf
   # Shelf::Utils contains a grab-bag of useful methods for writing web apps.
   module Utils
@@ -86,7 +84,7 @@ module Shelf
       508 => 'Loop Detected',
       510 => 'Not Extended',
       511 => 'Network Authentication Required'
-    }
+    }.freeze
 
     # Responses with HTTP status codes that should not have an entity body
     STATUS_WITH_NO_ENTITY_BODY = (100..199).to_a << 204 << 304

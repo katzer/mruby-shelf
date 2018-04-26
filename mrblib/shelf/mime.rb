@@ -20,8 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# rubocop:disable MutableConstant
-
 module Shelf
   module Mime
     # Returns String with mime type if found, otherwise use +fallback+.
@@ -54,6 +52,6 @@ module Shelf
       '.eot'   => 'application/vnd.ms-fontobject',
       '.woff'  => 'application/font-woff',
       '.woff2' => 'application/font-woff2'
-    }
+    }.freeze
   end
 end

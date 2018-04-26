@@ -20,8 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# rubocop:disable Style/TrivialAccessors
-
 module Shelf
   # Shelf::Builder implements a small DSL to iteratively construct Shelf
   # applications.
@@ -104,6 +102,8 @@ module Shelf
       @use.push ->(app) { middleware.new(app, *args, &block) }
     end
 
+    # rubocop:disable Style/TrivialAccessors
+
     # Takes an argument that is an object that responds to #call and returns a
     # Shelf response.
     #
@@ -124,6 +124,8 @@ module Shelf
     def run(app)
       @run = app
     end
+
+    # rubocop:enable Style/TrivialAccessors
 
     # Creates a route within the application.
     #

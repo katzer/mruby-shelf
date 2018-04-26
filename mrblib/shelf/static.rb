@@ -20,8 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.# MIT License
 
-# rubocop:disable MutableConstant
-
 module Shelf
   # The Shelf::Static middleware intercepts requests for static files
   # (javascript files, images, stylesheets, etc) based on the url prefixes or
@@ -51,7 +49,7 @@ module Shelf
   #     use Shelf::Static, urls: [""], root: 'public', index: 'index.html'
   #
   class Static
-    ALLOWED_VERBS = %w[GET HEAD OPTIONS]
+    ALLOWED_VERBS = %w[GET HEAD OPTIONS].freeze
     ALLOW_HEADER  = ALLOWED_VERBS.join(', ').freeze
 
     # Initializes the middleware with the shelf app and some options.
@@ -172,7 +170,7 @@ module Shelf
     #
     # @return [ String ] nil if not found.
     def read_asset(path)
-      fp = open(path, 'rb')
+      fp = File.open(path, 'rb')
       fp.read
     ensure
       fp.close
