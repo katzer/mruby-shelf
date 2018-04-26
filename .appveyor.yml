@@ -41,7 +41,7 @@ init:
 
 build_script:
 - rake mruby
-- IF "%MRUBY_VERSION%"=="1.3.0" (DEL /F /Q mruby\build\mrbgems\mruby-io\test\file.rb)
+- IF "%MRUBY_VERSION%"=="1.3.0" (DEL /F /Q mruby\build\mrbgems\mruby-io\test\) ELSE (DEL /F /Q mruby\mrbgems\mruby-io\test\)
 - rake compile
 
 test_script:
