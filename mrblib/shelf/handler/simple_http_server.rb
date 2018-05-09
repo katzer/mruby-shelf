@@ -28,7 +28,7 @@ module Shelf
       def self.run(app, options = {})
         host = options[:host] || 'localhost' if ENV['SHELF_ENV'] != 'production'
         host = nil if host == '0.0.0.0'
-        opts = { server_ip: host, port: 8080, app: app }.merge(options)
+        opts = { host: host, port: 8080, app: app }.merge(options)
 
         server = ::SimpleHttpServer.new(opts)
 
