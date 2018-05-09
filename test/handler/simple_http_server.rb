@@ -47,17 +47,17 @@ assert 'Shelf::Handler::SimpleHttpServer.run', 'without config' do
     assert_kind_of Hash, server.config
     assert_equal app, server.config[:app]
     assert_include server.config, :port
-    assert_include server.config, :server_ip
+    assert_include server.config, :host
     assert_kind_of Integer, server.config[:port]
     assert_equal 8080, server.config[:port]
-    assert_equal 'localhost', server.config[:server_ip]
+    assert_equal 'localhost', server.config[:host]
   end
 end
 
 assert 'Shelf::Handler::SimpleHttpServer.run', 'with config' do
-  Shelf::Handler::SimpleHttpServer.run(app, port: 80, server_ip: 'host') do |s|
+  Shelf::Handler::SimpleHttpServer.run(app, port: 80, host: 'host') do |s|
     assert_equal 80, s.config[:port]
-    assert_equal 'host', s.config[:server_ip]
+    assert_equal 'host', s.config[:host]
   end
 end
 
@@ -65,7 +65,7 @@ assert 'Shelf::Handler::SimpleHttpServer.run', 'SHELF_ENV=development' do
   ENV['SHELF_ENV'] = 'development'
 
   Shelf::Handler::SimpleHttpServer.run(app) do |server|
-    assert_equal 'localhost', server.config[:server_ip]
+    assert_equal 'localhost', server.config[:host]
   end
 end
 
@@ -73,6 +73,6 @@ assert 'Shelf::Handler::SimpleHttpServer.run', 'SHELF_ENV=production' do
   ENV['SHELF_ENV'] = 'production'
 
   Shelf::Handler::SimpleHttpServer.run(app) do |server|
-    assert_nil server.config[:server_ip]
+    assert_nil server.config[:host]
   end
 end
