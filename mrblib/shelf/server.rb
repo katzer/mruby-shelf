@@ -53,7 +53,7 @@ module Shelf
     #
     # @return [ Hash<String, Array>]
     def self.middleware
-      @m ||= begin
+      @middleware ||= begin
         m = Hash.new { |h, k| h[k] = [] }
         m['production']  = [logging_middleware, ContentLength, CatchError]
         m['development'] = [logging_middleware, ContentLength, CatchError]
@@ -91,9 +91,7 @@ module Shelf
     #
     # @return [ Class ]
     def server
-      @_server ||= Shelf::Handler.get(options[:server])
-      @_server   = Shelf::Handler.default unless @_server
-      @_server
+      @server ||= Shelf::Handler.get(options[:server]) || Shelf::Handler.default
     end
 
     # Run the server.
