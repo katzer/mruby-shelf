@@ -23,11 +23,9 @@
 module Shelf
   CONTENT_LENGTH    = 'Content-Length'.freeze
   CONTENT_TYPE      = 'Content-Type'.freeze
-  DATE              = 'Date'.freeze
   HTTP_HOST         = 'HTTP_HOST'.freeze
   HTTP_VERSION      = 'HTTP_VERSION'.freeze
   HTTPS             = 'HTTPS'.freeze
-  LOCATION          = 'Location'.freeze
   PATH_INFO         = 'PATH_INFO'.freeze
   REQUEST_METHOD    = 'REQUEST_METHOD'.freeze
   REQUEST_PATH      = 'REQUEST_PATH'.freeze
