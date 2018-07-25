@@ -252,6 +252,21 @@ Shelf comes with some useful middlewares. These can be defined by app or by envi
   - Writes all expection traces to `env[SHELF_ERRORS]`
   - Response body contains the stack trace under development mode
 
+- Deflater
+
+  ```ruby
+  app = Shelf::Builder.app do
+    use Shelf::Deflater
+    run ->(env) { [200, {}, ['A barebones shelf app']] }
+  end
+
+  app.call('REQUEST_METHOD' => 'GET', 'PATH_INFO' => '/', 'Accept-Encoding' => 'gzip')
+  # => [200, { 'Content-Encoding' => 'gzip', ... }, ['...']]
+  ```
+
+  - Requires [mruby-shelf-deflater][mruby-shelf-deflater]
+  - Supported compression algorithms are `gzip`, `deflate` and `identity`
+
 ## Development
 
 Clone the repo:
@@ -293,6 +308,7 @@ Made with :yum: from Leipzig
 [mruby-r3]: https://github.com/katzer/mruby-r3
 [mruby-logger]: https://github.com/katzer/mruby-logger
 [mruby-io]: https://github.com/iij/mruby-io
+[mruby-shelf-deflater]: https://github.com/katzer/mruby-shelf-deflater
 [mruby-simplehttpserver]: https://github.com/matsumotory/mruby-simplehttpserver
 [static]: mrblib/shelf/static.rb#L31
 [license]: http://opensource.org/licenses/MIT
