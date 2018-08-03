@@ -133,9 +133,10 @@ module Shelf
         body    = []
         headers = { 'Allow' => ALLOW_HEADER, CONTENT_LENGTH => '0' }
       else
-        body    = [read_asset(path)]
-        headers = { CONTENT_TYPE   => mime_type(path),
-                    CONTENT_LENGTH => body[0].bytesize.to_s }
+        body, ts = read_asset(path)
+        headers  = { CONTENT_TYPE    => mime_type(path),
+                     CONTENT_LENGTH  => body[0].bytesize.to_s,
+                     'Last-Modified' => ts }
       end
 
       [200, headers, body]
@@ -168,12 +169,22 @@ module Shelf
     #
     # @param [ String ] path The path to the file.
     #
-    # @return [ String ] nil if not found.
+    # @return [ Array<String, String> ] nil if not found.
     def read_asset(path)
-      fp = File.open(path, 'rb')
-      fp.read
+      io = File.new(path, 'rb')
+      [[io.read], last_modified_timestamp(io)]
     ensure
-      fp.close
+      io.close
+    end
+
+    # Get the well formatted Last-Modified tag for the asset.
+    #
+    # @param [ IO ] io The file which mtime to return.
+    #
+    # @return [ String ]
+    def last_modified_timestamp(io)
+      tp = io.mtime.gmtime.to_s.split
+      "#{tp[0]}, #{tp[2]} #{tp[1]} #{tp[5]} #{tp[3]} GMT"
     end
 
     # Construct a failure response by status code and body.
