@@ -21,11 +21,11 @@
 # SOFTWARE.
 
 module Shelf
-  # *Handlers* connect web servers with Shelf.
+  # Handlers connect web servers with Shelf.
   #
   # Shelf includes Handlers for SimpleHttpServer.
   #
-  # Handlers usually are activated by calling <tt>MyHandler.run(myapp)</tt>.
+  # Handlers usually are activated by calling MyHandler.run(myapp).
   # A second optional hash can be passed to include server-specific
   # configuration.
   module Handler
@@ -42,7 +42,7 @@ module Shelf
     #
     # @return [ Class ]
     def self.default
-      get ENV.fetch('SHELF_HANDLER', 'simplehttpserver')
+      get ENV.fetch('SHELF_HANDLER', Object.const_defined?(:Heeler) ? 'heeler' : 'simplehttpserver')
     end
 
     # Register a handler class via a shorthand hand.
