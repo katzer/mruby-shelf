@@ -52,3 +52,4 @@ build-iPhoneSimulator/
 ## mruby
 /mruby
 log.txt
+build_config.rb.lock
