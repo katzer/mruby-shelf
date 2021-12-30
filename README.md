@@ -76,7 +76,7 @@ Mounted routes may contain slugs and can be restricted to a certain HTTP method:
 
 ```ruby
 app = Shelf::Builder.app do
-  map('/users/{id}', :GET) { run ->(env) { [200, { ... }, [env['shelf.request.query_hash'][:id]]] } }
+  get('/users/{id}') { run ->(env) { [200, { ... }, [env['shelf.request.query_hash'][:id]]] } }
 end
 
 app.call('REQUEST_METHOD' => 'GET', 'PATH_INFO' => '/users/1')
