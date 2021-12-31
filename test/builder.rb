@@ -139,7 +139,17 @@ assert 'Shelf::Builder.call', 'restrict request method' do
   assert_equal 200, app.call(env_for('/any', method: 'PUT'))[0]
   assert_equal 200, app.call(env_for('/any', method: 'GET'))[0]
   assert_equal 200, app.call(env_for('/put', method: 'PUT'))[0]
-  assert_equal 405, app.call(env_for('/put', method: 'GET'))[0]
+  assert_equal 404, app.call(env_for('/put', method: 'GET'))[0]
+end
+
+assert 'Shelf::Builder.call', 'same path, other method' do
+  app = Shelf::Builder.app do
+    get('/hoge') { run ->(_) { [200, {}, ['OK get']] } }
+    put('/hoge') { run ->(_) { [200, {}, ['OK put']] } }
+  end
+
+  assert_equal ['OK get'], app.call(env_for('/hoge', method: 'GET'))[2]
+  assert_equal ['OK put'], app.call(env_for('/hoge', method: 'PUT'))[2]
 end
 
 assert 'Shelf::Builder.call', 'with slugs' do

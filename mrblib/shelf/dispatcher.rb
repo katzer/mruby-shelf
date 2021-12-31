@@ -44,7 +44,7 @@ module Shelf
       path   = env[PATH_INFO]
       method = R3.method_code(env[REQUEST_METHOD])
 
-      params, (app, data) = @tree.match(path)
+      params, (app, data) = @tree.match(path, method)
 
       return path_not_found     unless params
       return method_not_allowed if @tree.mismatch? path, method
