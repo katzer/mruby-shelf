@@ -161,3 +161,15 @@ assert 'Shelf::Builder.call', 'with slugs' do
 
   assert_equal ['1'], app.call(env_for('/users/1'))[2]
 end
+
+assert 'Shelf::Builder.call', 'Invalid HTTP method' do
+  app = Shelf::Builder.new do
+    get('/users') do
+      run ->(env) { [200, {}, ['ok']] }
+    end
+  end
+
+  assert_raise_with_message(ArgumentError, 'Invalid HTTP method: "INVALID".') do
+    app.call(env_for('/users', method: 'INVALID'))[2]
+  end
+end

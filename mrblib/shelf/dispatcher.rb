@@ -43,6 +43,7 @@ module Shelf
     def call(env)
       path   = env[PATH_INFO]
       method = R3.method_code(env[REQUEST_METHOD])
+      raise ArgumentError, "Invalid HTTP method: #{env[REQUEST_METHOD].inspect}." unless method
 
       params, (app, data) = @tree.match(path, method)
 
