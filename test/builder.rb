@@ -169,7 +169,5 @@ assert 'Shelf::Builder.call', 'Invalid HTTP method' do
     end
   end
 
-  assert_raise_with_message(ArgumentError, 'Invalid HTTP method: "INVALID".') do
-    app.call(env_for('/users', method: 'INVALID'))[2]
-  end
+  assert_equal(405, app.call(env_for('/users', method: 'INVALID'))[0])
 end
