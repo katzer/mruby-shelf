@@ -43,11 +43,12 @@ module Shelf
     def call(env)
       path   = env[PATH_INFO]
       method = R3.method_code(env[REQUEST_METHOD])
+      return method_not_allowed unless method
 
-      params, (app, data) = @tree.match(path)
+      params, (app, data) = @tree.match(path, method)
 
-      return path_not_found     unless params
-      return method_not_allowed if @tree.mismatch? path, method
+      return method_not_allowed if !params && @tree.match?(path)
+      return path_not_found unless params
 
       store_query_hash_into_env(params, env)
       env[SHELF_R3_DATA] = data if data

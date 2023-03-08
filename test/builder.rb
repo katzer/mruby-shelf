@@ -142,6 +142,16 @@ assert 'Shelf::Builder.call', 'restrict request method' do
   assert_equal 405, app.call(env_for('/put', method: 'GET'))[0]
 end
 
+assert 'Shelf::Builder.call', 'same path, other method' do
+  app = Shelf::Builder.app do
+    get('/hoge') { run ->(_) { [200, {}, ['OK get']] } }
+    put('/hoge') { run ->(_) { [200, {}, ['OK put']] } }
+  end
+
+  assert_equal ['OK get'], app.call(env_for('/hoge', method: 'GET'))[2]
+  assert_equal ['OK put'], app.call(env_for('/hoge', method: 'PUT'))[2]
+end
+
 assert 'Shelf::Builder.call', 'with slugs' do
   app = Shelf::Builder.new do
     map('/users/{id}') do
@@ -150,4 +160,14 @@ assert 'Shelf::Builder.call', 'with slugs' do
   end
 
   assert_equal ['1'], app.call(env_for('/users/1'))[2]
+end
+
+assert 'Shelf::Builder.call', 'Invalid HTTP method' do
+  app = Shelf::Builder.new do
+    get('/users') do
+      run ->(env) { [200, {}, ['ok']] }
+    end
+  end
+
+  assert_equal(405, app.call(env_for('/users', method: 'INVALID'))[0])
 end
