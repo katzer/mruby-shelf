@@ -40,7 +40,7 @@ def read_file(*path)
 end
 
 assert 'Static', 'url overriding' do
-  app = build_app urls: { '/' => 'Rakefile' }
+  app = build_app({ urls: { '/' => 'Rakefile' } })
   code, headers, = app.call(env_for('/'))
   file           = read_file('Rakefile')
 
@@ -49,7 +49,7 @@ assert 'Static', 'url overriding' do
 end
 
 assert 'Static', 'default route' do
-  app            = build_app urls: [], index: 'README.md'
+  app            = build_app({ urls: [], index: 'README.md' })
   code, headers, = app.call(env_for('/'))
   file           = read_file('README.md')
 
@@ -58,7 +58,7 @@ assert 'Static', 'default route' do
 end
 
 assert 'Static', 'url' do
-  app  = build_app urls: ['/test']
+  app  = build_app({ urls: ['/test'] })
   body = app.call(env_for('/test/static.rb'))[2]
   file = read_file('test', File.basename(__FILE__))
 
@@ -66,14 +66,14 @@ assert 'Static', 'url' do
 end
 
 assert 'Static', '404' do
-  app   = build_app urls: ['/test']
+  app   = build_app({ urls: ['/test'] })
   code, = app.call(env_for('/test/123.rb'))
 
   assert_equal 404, code
 end
 
 assert 'Static', '405' do
-  app           = build_app urls: ['/test']
+  app           = build_app({ urls: ['/test'] })
   code, headers = app.call(env_for('/test/123.rb', 'DELETE'))
 
   assert_equal 405, code
@@ -83,7 +83,7 @@ assert 'Static', '405' do
 end
 
 assert 'Static', 'OPTIONS' do
-  app                 = build_app urls: { '/' => 'Rakefile' }
+  app                 = build_app({ urls: { '/' => 'Rakefile' } })
   code, headers, body = app.call(env_for('/', 'OPTIONS'))
 
   assert_equal 200, code
@@ -92,7 +92,7 @@ assert 'Static', 'OPTIONS' do
 end
 
 assert 'Static', 'null byte' do
-  app   = build_app urls: { '/' => "Rakefile\0" }
+  app   = build_app({ urls: { '/' => "Rakefile\0" } })
   code, = app.call(env_for('/'))
 
   assert_equal 400, code
@@ -100,7 +100,7 @@ end
 
 assert 'Static', 'dot dot slash' do
   mruby = File.join(ROOT, 'mruby')
-  app   = build_app urls: { '/' => '../mrblib/shelf.rb' }, root: mruby
+  app   = build_app({ urls: { '/' => '../mrblib/shelf.rb' }, root: mruby })
   code, = app.call(env_for('/'))
 
   assert_equal 404, code

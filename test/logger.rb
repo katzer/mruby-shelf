@@ -33,7 +33,7 @@ assert 'Shelf::Logger' do
     run ->(env) { [200, env, ['A barebones shelf app']] }
   end
 
-  _, headers, = app.call('REQUEST_METHOD' => 'GET', 'PATH_INFO' => '/')
+  _, headers, = app.call({ 'REQUEST_METHOD' => 'GET', 'PATH_INFO' => '/' })
 
   assert_include headers, Shelf::SHELF_LOGGER
   assert_kind_of Logger, headers[Shelf::SHELF_LOGGER]

@@ -78,7 +78,7 @@ end
 
 assert 'Shelf::Builder.run' do
   app = Shelf::Builder.new
-  assert_nothing_raised { app.run -> () {} }
+  assert_nothing_raised { app.run -> {} }
 end
 
 assert 'Shelf::Builder.map(str)' do

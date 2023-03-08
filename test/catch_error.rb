@@ -28,13 +28,13 @@ class StringIO
   def flush; end
 
   def to_s
-    @msgs.join("\n") if @msgs
+    @msgs&.join("\n")
   end
 
   alias inspect to_s
 
   def clear
-    @msgs.clear if @msgs
+    @msgs&.clear
   end
 end
 
@@ -46,20 +46,20 @@ assert 'Shelf::CatchError' do
   end
 
   assert_nothing_raised do
-    app.call('REQUEST_METHOD' => 'GET', 'PATH_INFO' => '/')
+    app.call({ 'REQUEST_METHOD' => 'GET', 'PATH_INFO' => '/' })
   end
 
   pip.clear
 
   ENV['SHELF_ENV'] = 'production'
-  code, headers, body = app.call('REQUEST_METHOD' => 'GET', 'PATH_INFO' => '/')
+  code, headers, body = app.call({ 'REQUEST_METHOD' => 'GET', 'PATH_INFO' => '/' })
 
   assert_equal 500, code
   assert_equal 'Internal Server Error', body[0]
   assert_equal 21, headers['Content-Length'].to_i
 
   ENV['SHELF_ENV'] = 'development'
-  code, _, body = app.call('REQUEST_METHOD' => 'GET', 'PATH_INFO' => '/')
+  code, _, body = app.call({ 'REQUEST_METHOD' => 'GET', 'PATH_INFO' => '/' })
 
   assert_equal 500, code
   assert_include body[0], "NoMethodError: undefined method 'undef_method_call'"

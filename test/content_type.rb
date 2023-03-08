@@ -28,7 +28,7 @@ def headers_for(status, headers = {}, body = [])
     run ->(_) { [status, headers, body] }
   end
 
-  _, headers, = app.call(REQUEST_METHOD => 'GET', PATH_INFO => '/')
+  _, headers, = app.call({ REQUEST_METHOD => 'GET', PATH_INFO => '/' })
 
   headers
 end

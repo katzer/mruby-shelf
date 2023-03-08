@@ -37,7 +37,7 @@ assert 'Shelf::Logger' do
     run ->(env) { [200, env, ['A barebones shelf app']] }
   end
 
-  app.call('REQUEST_METHOD' => 'GET', 'PATH_INFO' => '/')
+  app.call({ 'REQUEST_METHOD' => 'GET', 'PATH_INFO' => '/' })
 
   assert_false log.to_s.empty?
 end

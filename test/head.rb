@@ -26,12 +26,12 @@ assert 'Shelf::Head' do
     run ->(_) { [200, {}, ['A barebones shelf app']] }
   end
 
-  code, _, body = app.call('REQUEST_METHOD' => 'GET', 'PATH_INFO' => '/')
+  code, _, body = app.call({ 'REQUEST_METHOD' => 'GET', 'PATH_INFO' => '/' })
 
   assert_equal 200, code
   assert_false body.empty?
 
-  code, _, body = app.call('REQUEST_METHOD' => 'HEAD', 'PATH_INFO' => '/')
+  code, _, body = app.call({ 'REQUEST_METHOD' => 'HEAD', 'PATH_INFO' => '/' })
 
   assert_equal 200, code
   assert_true body.empty?
