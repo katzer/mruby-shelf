@@ -35,7 +35,7 @@ end
 
 # Return the Shelf environment used for a request to +uri+.
 #
-def self.env_for(uri = '', opts = {})
+def env_for(uri = '', opts = {})
   env = {}
 
   env[REQUEST_METHOD]   = opts[:method] ? opts[:method].to_s.upcase : GET
